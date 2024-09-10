@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "kedro-vs-maestro"
+version = "0.1.0"
+description = ""
+authors = ["Michael Polonskij <michael.polonskij@gmx.de>"]
+readme = "README.md"
+packages = [{include = "kedro_vs_maestro"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.2.2"
+scikit-learn = "^1.5.1"
+kedro = "^0.19.8"
+black = "^24.8.0"
+pylint = "^3.2.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
