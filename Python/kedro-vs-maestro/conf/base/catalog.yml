@@ -1,0 +1,22 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+# Update the dataset names in `kedro-vs-maestro/conf/base/catalog.yml`
+raw_data:
+  type: MemoryDataset
+
+X_train:
+  type: MemoryDataset
+
+X_test:
+  type: MemoryDataset
+
+y_train:
+  type: MemoryDataset
+
+y_test:
+  type: MemoryDataset
+
+model:
+  type: MemoryDataset
