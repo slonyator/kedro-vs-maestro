@@ -14,28 +14,28 @@ iris_test <- testing(iris_split)
 log_info("Data Preprocessing completed")
 
 log_info("Model Training started")
-rf_spec <- rand_forest(mtry = 2, trees = 100) %>%
-  set_engine("randomForest") %>%
+rf_spec <- rand_forest(mtry = 2, trees = 100)  |> 
+  set_engine("randomForest") |> 
   set_mode("classification")
 
-rf_workflow <- workflow() %>%
-  add_formula(Species ~ .) %>%
+rf_workflow <- workflow() |> 
+  add_formula(Species ~ .) |> 
   add_model(rf_spec)
 
-rf_fit <- rf_workflow %>%
+rf_fit <- rf_workflow |> 
   fit(data = iris_train)
 
 log_info("Model Training completed")
 
 log_info("Model Evaluation started")
-iris_predictions <- predict(rf_fit, iris_test) %>%
+iris_predictions <- predict(rf_fit, iris_test)  |> 
   bind_cols(iris_test)
 
-accuracy <- iris_predictions %>%
-  metrics(truth = Species, estimate = .pred_class) %>%
+accuracy <- iris_predictions  |> 
+  metrics(truth = Species, estimate = .pred_class)  |> 
   filter(.metric == "accuracy")
 
-conf_matrix <- iris_predictions %>%
+conf_matrix <- iris_predictions  |> 
   conf_mat(truth = Species, estimate = .pred_class)
 
 log_info("Model Evaluation completed")
