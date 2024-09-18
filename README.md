@@ -17,14 +17,15 @@ But here’s the thing: A few weeks ago, [maestro](https://github.com/whipson/ma
 
 ### Kedro
 
-We assume you have an empty git repository as well as `Python` and a working environment where `Kedro` is installed. To setup a new project, I ran the following command:
+We assume you have an empty Git repository, along with `Python` and a working environment where `Kedro` is installed. To set up a new project, I ran the following command:
 
 ```bash
 kedro new --name=kedro-vs-maestro --tools=none --example=n
 ```
 
-because I wanted the setup to be as minimal as possible. The `--tools=none` flag ensures that no additional tools are installed, and the `--example=n` flag ensures that no example pipeline is created.
-This is how the project structure looks like:
+I used this command because I wanted the setup to be as minimal as possible. The `--tools=none` flag ensures that no additional tools are installed, and the `--example=n` flag prevents an example pipeline from being created.
+
+Here's what the project structure looks like:
 
 ```bash
 tree
@@ -51,6 +52,5 @@ tree
             └── settings.py
 ```
 
-I don't know what you guys think, but when I first saw it, it was a bit overwhelming. I mean, I get it, it's a framework, but I was hoping for a bit more simplicity. I'm sure it's great for larger projects, but for smaller ones, it's a bit much.
-
+I don't know what you guys think, but when I first saw it, it was a bit overwhelming. I understand that it's a framework designed for more complex projects, but I was hoping for a bit more simplicity. While I'm sure it works well for larger projects, for smaller ones, it seems like an overkill.
 
