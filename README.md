@@ -2,7 +2,7 @@
 
 In this repository, we provide a basic comparison between `Kedro`, a `Python` framework for creating reproducible, maintainable, and modular data science code, and `maestro`, a new framework for `R` that orchestrates pipelines.
 
-# Background
+## Background
 
 I truly love R. It’s the language that began my data science journey. Moreover, I believe there are tasks, particularly in "classical Machine Learning," where `R` has, in my opinion, an edge over `Python`. That being said, multiple statements can be true at once. For me, these are:
 
@@ -11,11 +11,11 @@ I truly love R. It’s the language that began my data science journey. Moreover
 
 But here’s the thing: A few weeks ago, [maestro](https://github.com/whipson/maestro) was released on CRAN. It’s a framework for `R` to orchestrate pipelines. I was intrigued and wanted to see how it compares to `Kedro`. While `tidyverse` & `tidymodels` may be excellent, if orchestrating and deploying pipelines is a challenge, I’d prefer a solution that, although not perfect, enables me to accomplish both with ease.
 
-# Comparison
+## Comparison
 
-## Installation & Setup
+### Installation & Setup
 
-### Kedro
+#### Kedro
 
 We assume you have an empty Git repository, along with `Python` and a working environment where `Kedro` is installed. To set up a new project, I ran the following command:
 
@@ -25,10 +25,9 @@ kedro new --name=kedro-vs-maestro --tools=none --example=n
 
 I used this command because I wanted the setup to be as minimal as possible. The `--tools=none` flag ensures that no additional tools are installed, and the `--example=n` flag prevents an example pipeline from being created.
 
-Here's what the project structure looks like:
+Here's what the project structure looks like if you use the `tree` command:
 
 ```bash
-tree
 .
 └── kedro-vs-maestro
     ├── README.md
