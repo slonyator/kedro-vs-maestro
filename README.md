@@ -53,3 +53,16 @@ Here's what the project structure looks like if you use the `tree` command:
 
 I don't know what you guys think, but when I first saw it, it was a bit overwhelming. I understand that it's a framework designed for more complex projects, but I was hoping for a bit more simplicity. While I'm sure it works well for larger projects, for smaller ones, it seems like an overkill. There are quite a lot of files and directories and you have to do a bit of reading to understand what's going on, as it's not obvious from the start.
 
+#### Maestro
+
+The setup and installation for maestro are easier. You install the `maestro` package from CRAN and run the `create_maestro("./", overwrite = TRUE)` command in your R console. And that's it. The project structure is as follows (using the `tree` command again):
+
+```bash
+.
+├── orchestrator.R
+└── pipelines
+    └── my_pipe.R
+```
+
+Well that's a lot simpler, isn't it? The `orchestrator.R` file is where you define your pipeline, and the `pipelines` directory is where you store your pipeline scripts. The `my_pipe.R` file is an example pipeline script that you can use to get started. We will examine the contents of these in the next sections.
+
