@@ -51,5 +51,5 @@ Here's what the project structure looks like if you use the `tree` command:
             └── settings.py
 ```
 
-I don't know what you guys think, but when I first saw it, it was a bit overwhelming. I understand that it's a framework designed for more complex projects, but I was hoping for a bit more simplicity. While I'm sure it works well for larger projects, for smaller ones, it seems like an overkill.
+I don't know what you guys think, but when I first saw it, it was a bit overwhelming. I understand that it's a framework designed for more complex projects, but I was hoping for a bit more simplicity. While I'm sure it works well for larger projects, for smaller ones, it seems like an overkill. There are quite a lot of files and directories and you have to do a bit of reading to understand what's going on, as it's not obvious from the start.
 
