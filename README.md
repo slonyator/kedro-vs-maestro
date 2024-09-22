@@ -1,13 +1,13 @@
 # Kedro vs Maestro
 
-In this repository, we provide a basic comparison between `Kedro`, a `Python` framework for creating reproducible, maintainable, and modular data science code, and `maestro`, a new framework for `R` that orchestrates pipelines.
+In this blog post, I provide a basic comparison between `Kedro`, a `Python` framework for creating reproducible, maintainable, and modular data science code, and `maestro`, a new framework for `R` that orchestrates pipelines.
 
 ## Background
 
 I truly love R. It’s the language that began my data science journey. Moreover, I believe there are tasks, particularly in "classical Machine Learning," where `R` has, in my opinion, an edge over `Python`. That being said, multiple statements can be true at once. For me, these are:
 
-- I prefer `tidyverse` & `tidymodels` over `pandas` & `sklearn`, because of their readability, consistency, and control over the workflow. It’s unmatched. However, for very large datasets, additional packages may be necessary to improve speed.
-- There’s a great saying: `Python` is the second-best language for every problem, and its ecosystem for productionizing code is unparalleled. Tools like `Kedro` and `Airflow` are just two examples from the vast array available.
+- I prefer `tidyverse` and `tidymodels` over `pandas` and `sklearn`, because of their readability, consistency, and control over the workflow. It’s unmatched. However, for very large datasets, additional packages may be necessary to improve speed.
+- There’s a great saying: "`Python` is the second-best language for every problem", and its ecosystem for productionizing code is unparalleled. Tools like `Kedro` and `Airflow` are just two examples from the vast array available.
 
 But here’s the thing: A few weeks ago, [maestro](https://github.com/whipson/maestro) was released on CRAN. It’s a framework for `R` to orchestrate pipelines. I was intrigued and wanted to see how it compares to `Kedro`. While `tidyverse` & `tidymodels` may be excellent, if orchestrating and deploying pipelines is a challenge, I’d prefer a solution that, although not perfect, enables me to accomplish both with ease.
 
@@ -17,7 +17,7 @@ But here’s the thing: A few weeks ago, [maestro](https://github.com/whipson/ma
 
 #### Kedro
 
-We assume you have an empty Git repository, along with `Python` and a working environment where `Kedro` is installed. To set up a new project, I ran the following command:
+Let's assume you have an empty Git repository, along with `Python` and a working environment where `Kedro` is installed. To set up a new project, I ran the following command:
 
 ```bash
 kedro new --name=kedro-vs-maestro --tools=none --example=n
@@ -51,7 +51,7 @@ Here's what the project structure looks like if you use the `tree` command:
             └── settings.py
 ```
 
-I don't know what you guys think, but when I first saw it, it was a bit overwhelming. I understand that it's a framework designed for more complex projects, but I was hoping for a bit more simplicity. While I'm sure it works well for larger projects, for smaller ones, it seems like an overkill. There are quite a lot of files and directories and you have to do a bit of reading to understand what's going on, as it's not obvious from the start.
+I don't know what you guys think, but when I first saw it, it was a bit overwhelming. I understand that it's a framework designed for more complex projects, but I was hoping for a bit more simplicity. While I'm sure it works well for larger projects, for smaller ones, it seems like an "overkill". There are quite a lot of files and directories and you have to do a bit of reading to understand what's going on, as it's not obvious from the start.
 
 
 #### Maestro
@@ -177,7 +177,6 @@ model:
   type: MemoryDataset
 No newline at end of file
 ```
-
 In our case the `catalog.yml` does not look very spectacular, as we only have memory datasets. In case you store any data or models you would have to specify the path to the file in a `filepath` attribute which you can set for each dataset or model.
 
 Now we are good to go to execute the pipeline. This is simply done by navigating to the `kedro-vs-maestro` directory (or however you named your `kedro` project) and running the following command on the terminal:
@@ -225,7 +224,7 @@ which gives you the following output:
                     INFO     Pipeline execution completed successfully.                                                         runner.py:123
 ```
 
-we not going to digest the logs in detail, but you can see that the pipeline terminated successfuly and you can also see the logs of the individual nodes. Via the CLI you can set a whole lot of parameters, in case you want to run the pipeline in a asynchronous way, or you want to run only a specific pipeline, or you want to run only a specific node. You can find more information [here](https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html).
+We're not going to digest the logs in detail, but you can see that the pipeline terminated successfully and you can also see the logs of the individual nodes. Via the CLI you can set a whole lot of parameters, in case you want to run the pipeline in a asynchronous way, or you want to run only a specific pipeline, or you want to run only a specific node. You can find more information [here](https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html).
 
 #### Maestro
 
@@ -386,6 +385,6 @@ Actually, I wanted to test both pipelines not only for a basic pipeline, but als
 - `Mlflow` for parameterization
 - Parallel execution of nodes
 
-but for me the race is over before it actually began. As much as I love R, `tidyverse` and `tidymodels` framework - if you cannot build a `DAG` I don't see a reason to use `R`, `tidyverse`, `tidymodels` and finally `maestro`. I'd rather take the less preferred data manipulation and modeling framework but I have uncomparibly better tools for orchestrating and deploying my pipelines.
+but for me the race is over before it actually began. As much as I love R, `tidyverse` and `tidymodels` framework - if you cannot build a `DAG` I don't see a reason to use `R`, `tidyverse`, `tidymodels` and finally `maestro`. I'd rather take the less preferred data manipulation and modeling framework but I have incomparably better tools for orchestrating and deploying my pipelines.
 
 I know that `maestro` is a very new package and it's still in development, there is even an [issue](https://github.com/whipson/maestro/issues/98) for building a DAG and `maestro` is supposed to be integrable with the `targets` package, but unfortunately there is no neat solution which is seamlessly integrated in the `tidyverse` world. At this point of time I have to recommend to use `Python` for Data Science. Seems like the battle is over. At least for now. 
