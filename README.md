@@ -175,7 +175,6 @@ y_test:
 
 model:
   type: MemoryDataset
-No newline at end of file
 ```
 In our case the `catalog.yml` does not look very spectacular, as we only have memory datasets. In case you store any data or models you would have to specify the path to the file in a `filepath` attribute which you can set for each dataset or model.
 
