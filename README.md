@@ -226,3 +226,155 @@ which gives you the following output:
 ```
 
 we not going to digest the logs in detail, but you can see that the pipeline terminated successfuly and you can also see the logs of the individual nodes. Via the CLI you can set a whole lot of parameters, in case you want to run the pipeline in a asynchronous way, or you want to run only a specific pipeline, or you want to run only a specific node. You can find more information [here](https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html).
+
+#### Maestro
+
+For `maestro` like the setup the whole thing is easier. You put your `R` functions just in a file (I called it `iris_model` but the name does not really make a difference) and put it in the `pipelines` directory. Here's the code:
+
+```R
+#' Iris Model Pipeline
+#' @maestroFrequency 1 day
+#' @maestroStartTime 2024-03-25 12:30:00
+iris_model_pipeline <- function() {
+  load_data <- function() {
+    log_info("Data Loading started")
+    data(iris)
+    log_info("Data Loading completed")
+    return(iris)
+  }
+
+  preprocess_data <- function(iris_data) {
+    log_info("Data Preprocessing started")
+    set.seed(42)
+    iris_split <- initial_split(iris_data, prop = 0.8, strata = Species)
+    iris_train <- training(iris_split)
+    iris_test <- testing(iris_split)
+    log_info("Data Preprocessing completed")
+    return(list(train = iris_train, test = iris_test))
+  }
+
+  train_model <- function(iris_train) {
+    log_info("Model Training started")
+    rf_spec <- rand_forest(mtry = 2, trees = 100)  |>
+      set_engine("randomForest") |>
+      set_mode("classification")
+
+    rf_workflow <- workflow() |>
+      add_formula(Species ~ .) |>
+      add_model(rf_spec)
+
+    rf_fit <- rf_workflow |> fit(data = iris_train)
+    log_info("Model Training completed")
+    return(rf_fit)
+  }
+
+  evaluate_model <- function(rf_fit, iris_test) {
+    log_info("Model Evaluation started")
+    iris_predictions <- predict(rf_fit, iris_test) |> bind_cols(iris_test)
+
+    accuracy <- iris_predictions |>
+      metrics(truth = Species, estimate = .pred_class) |>
+      filter(.metric == "accuracy")
+
+    conf_matrix <- iris_predictions |>
+      conf_mat(truth = Species, estimate = .pred_class)
+
+    log_info("Model Evaluation completed")
+    log_info("Accuracy: %s", accuracy$.estimate)
+    log_info("Confusion Matrix:\n%s", conf_matrix)
+  }
+
+  iris_data <- load_data()
+  split_data <- preprocess_data(iris_data)
+  rf_fit <- train_model(split_data$train)
+  evaluate_model(rf_fit, split_data$test)
+}
+```
+
+The only thing which is different to a normal `R` script where you store your functions are the roxygen tags which define the frequency and the start time of the pipeline. The `@maestroFrequency` tag defines how often the pipeline should be executed and the `@maestroStartTime` tag defines when the pipeline should be executed for the first time.
+
+To execute the pipeline we have to write some code in the `orchestrator.R` file:
+
+```R
+library(maestro)
+library(logger)
+library(tidyverse)
+library(tidymodels)
+
+log_info("Building schedule")
+
+schedule_table <- build_schedule(pipeline_dir = "pipelines")
+
+log_info("Running scheduled pipelines")
+
+output <- run_schedule(
+  schedule_table, 
+  orch_frequency = "1 day"
+)
+
+log_info("Pipeline run completed")
+```
+Pretty straightforward. You execute it by running the `orchestrator.R` file in your R console or via the terminal with the command (assuming you are in the correct directory):
+
+```bash
+Rscript orchestrator.R
+```
+
+which gives you the following output:
+
+```bash
+- The project is out-of-sync -- use `renv::status()` for details.
+── Attaching core tidyverse packages ───────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2
+── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package to force all conflicts to become errors
+── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────────────────── tidymodels 1.2.0 ──
+✔ broom        1.0.6     ✔ rsample      1.2.1
+✔ dials        1.3.0     ✔ tune         1.2.1
+✔ infer        1.0.7     ✔ workflows    1.1.4
+✔ modeldata    1.4.0     ✔ workflowsets 1.1.0
+✔ parsnip      1.2.1     ✔ yardstick    1.3.1
+✔ recipes      1.1.0
+── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────── tidymodels_conflicts() ──
+✖ scales::discard() masks purrr::discard()
+✖ dplyr::filter()   masks stats::filter()
+✖ recipes::fixed()  masks stringr::fixed()
+✖ dplyr::lag()      masks stats::lag()
+✖ yardstick::spec() masks readr::spec()
+✖ recipes::step()   masks stats::step()
+• Search for functions across packages at https://www.tidymodels.org/find/
+INFO [2024-09-21 22:37:36] Building schedule
+ℹ 1 script successfully parsed
+INFO [2024-09-21 22:37:36] Running scheduled pipelines
+
+── Running pipelines ▶
+INFO [2024-09-21 22:37:36] Data Loading started
+INFO [2024-09-21 22:37:36] Data Loading completed
+INFO [2024-09-21 22:37:36] Data Preprocessing started
+INFO [2024-09-21 22:37:36] Data Preprocessing completed
+INFO [2024-09-21 22:37:36] Model Training started
+INFO [2024-09-21 22:37:36] Model Training completed
+INFO [2024-09-21 22:37:36] Model Evaluation started
+INFO [2024-09-21 22:37:36] Model Evaluation completed
+INFO [2024-09-21 22:37:36] Accuracy: %s0.9
+INFO [2024-09-21 22:37:36] Confusion Matrix:
+%slist(table = c(10, 0, 0, 0, 9, 1, 0, 2, 8))
+✔ pipelines/iris_model.R iris_model_pipeline [73ms]
+
+── Pipeline execution completed ■ | 0.08 sec elapsed
+✔ 1 success | → 0 skipped | ! 0 warnings | ✖ 0 errors | ◼ 1 total
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+── Next scheduled pipelines ❯
+Pipe name | Next scheduled run
+• iris_model_pipeline | 2024-09-23
+INFO [2024-09-21 22:37:36] Pipeline run completed
+```
+
+Simple, but here is the big, big BUT, which is kind of hidden under the surface. **You cannot build a DAG with `maestro`**. You can only define a pipeline which is executed sequentially. This is a big drawback in my opinion, as you cannot define complex pipelines with dependencies between the nodes. How to schedule a the execution of one "node" after the previous one is finished? It's just not possible with `maestro`.
