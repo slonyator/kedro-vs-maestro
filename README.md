@@ -386,6 +386,6 @@ Actually, I wanted to test both pipelines not only for a basic pipeline, but als
 - `Mlflow` for parameterization
 - Parallel execution of nodes
 
-but for me the race is over before it actually began. As much as I love R, `tidyverse` and `tidymodels` framework - if you cannot build a `DAG` I don't see a reason to use `R`. I'd rather take the less preferred data manipulation and modeling framework but I have uncomparibly better tools for orchestrating and deploying my pipelines.
+but for me the race is over before it actually began. As much as I love R, `tidyverse` and `tidymodels` framework - if you cannot build a `DAG` I don't see a reason to use `R`, `tidyverse`, `tidymodels` and finally `maestro`. I'd rather take the less preferred data manipulation and modeling framework but I have uncomparibly better tools for orchestrating and deploying my pipelines.
 
 I know that `maestro` is a very new package and it's still in development, there is even an [issue](https://github.com/whipson/maestro/issues/98) for building a DAG and `maestro` is supposed to be integrable with the `targets` package, but unfortunately there is no neat solution which is seamlessly integrated in the `tidyverse` world. At this point of time I have to recommend to use `Python` for Data Science. Seems like the battle is over. At least for now. 
